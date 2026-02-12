@@ -34,7 +34,7 @@ resource "aws_iam_role_policy_attachment" "eks_AmazonEBSCSIDriverPolicy" {
 
 resource "aws_eks_pod_identity_association" "ebs_eks_pod_identity_association" {
   count = var.create_ebs_controller ? 1 : 0
-  
+
   cluster_name = aws_eks_cluster.my_eks_cluster.name
   namespace    = "kube-system"
 

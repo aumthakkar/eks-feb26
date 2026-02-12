@@ -1,4 +1,6 @@
 resource "helm_release" "lbc_helm_release" {
+  count = var.create_lbc_controller ? 1 : 0
+
   name      = "${var.name_prefix}-lb-controller"
   namespace = "kube-system"
 

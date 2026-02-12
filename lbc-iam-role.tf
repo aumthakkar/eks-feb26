@@ -1,4 +1,6 @@
 resource "aws_iam_role" "lbc_iam_role" {
+  count = var.create_lbc_controller ? 1 : 0
+
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -30,6 +32,8 @@ data "http" "lbc_iam_policy_raw" {
 }
 
 resource "aws_iam_policy" "lbc_iam_policy" {
+  count = var.create_lbc_controller ? 1 : 0
+
   name        = "${var.name_prefix}-lbc-iam-role-policy"
   path        = "/"
   description = "LoadBalancer Controller IAM Policy derived from the raw json policy data source"
@@ -42,16 +46,20 @@ resource "aws_iam_policy" "lbc_iam_policy" {
 }
 
 resource "aws_iam_role_policy_attachment" "lbc_iam_role_policy_attachment" {
-  role       = aws_iam_role.lbc_iam_role.name
-  policy_arn = aws_iam_policy.lbc_iam_policy.arn
+  count = var.create_lbc_controller ? 1 : 0
+
+  role       = aws_iam_role.lbc_iam_role[count.index].name
+  policy_arn = aws_iam_policy.lbc_iam_policy[count.index].arn
 }
 
 resource "aws_eks_pod_identity_association" "lbc_pod_identity_association" {
+  count = var.create_lbc_controller ? 1 : 0
+
   cluster_name = aws_eks_cluster.my_eks_cluster.name
   namespace    = "kube-system"
 
   service_account = "aws-load-balancer-controller"
-  role_arn        = aws_iam_role.lbc_iam_role.arn
+  role_arn        = aws_iam_role.lbc_iam_role[count.index].arn
 
   depends_on = [
     aws_eks_addon.eks_pod_identity_agent
