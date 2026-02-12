@@ -37,3 +37,5 @@ variable "nodegroup_min_size" {}
 variable "nodegroup_max_size" {}
 
 variable "max_unavailable_percentage" {}
+
+variable "create_ebs_controller" {}
