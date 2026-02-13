@@ -40,3 +40,4 @@ variable "max_unavailable_percentage" {}
 
 variable "create_ebs_controller" {}
 variable "create_lbc_controller" {}
+variable "create_cloudwatch_controller" {}
