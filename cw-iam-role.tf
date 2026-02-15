@@ -45,10 +45,24 @@ resource "aws_eks_pod_identity_association" "cw_observability_pod_identity_assoc
   cluster_name = aws_eks_cluster.my_eks_cluster.name
   namespace    = "kube-system"
 
-  service_account = "cloudwatch-agent"
+  service_account = "amazon-cloudwatch"
   role_arn        = aws_iam_role.cw_iam_role[count.index].arn
 
   depends_on = [
     aws_eks_addon.eks_pod_identity_agent
   ]
+}
+
+resource "aws_eks_pod_identity_association" "fluent_bit_pod_identity_association" {
+  count = var.create_cloudwatch_controller ? 1 : 0
+
+  cluster_name = aws_eks_cluster.my_eks_cluster.name
+  namespace = "amazon-cloudwatch"
+
+  service_account = "fluent-bit"
+  role_arn = aws_iam_role.cw_iam_role[count.index].arn
+
+  depends_on = [
+    aws_eks_addon.eks_pod_identity_agent
+   ]
 }
