@@ -43,9 +43,9 @@ resource "aws_eks_pod_identity_association" "cw_observability_pod_identity_assoc
   count = var.create_cloudwatch_controller ? 1 : 0
 
   cluster_name = aws_eks_cluster.my_eks_cluster.name
-  namespace    = "kube-system"
+  namespace    = "amazon-cloudwatch"
 
-  service_account = "amazon-cloudwatch"
+  service_account = "cloudwatch-agent"
   role_arn        = aws_iam_role.cw_iam_role[count.index].arn
 
   depends_on = [
