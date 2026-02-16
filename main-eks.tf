@@ -29,11 +29,6 @@ resource "aws_eks_cluster" "my_eks_cluster" {
 
 }
 
-resource "aws_key_pair" "my_nodegroup_keypair" {
-  key_name   = var.nodegroup_keyname
-  public_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJUdSWoZx/kv4XPHSBr7yBgnt/DkCiOWUeUHxhAoHdIP"
-}
-
 resource "aws_eks_node_group" "my_eks_nodegroup" {
   node_group_name = var.node_group_name
   cluster_name    = aws_eks_cluster.my_eks_cluster.name
@@ -45,11 +40,6 @@ resource "aws_eks_node_group" "my_eks_nodegroup" {
   instance_types = var.nodegroup_instance_types
   capacity_type  = var.nodegroup_capacity_type
   disk_size      = var.nodegroup_disk_size
-
-  remote_access {
-    ec2_ssh_key = var.ec2_ssh_key
-
-  }
 
   scaling_config {
     desired_size = var.nodegroup_desired_size
@@ -64,7 +54,8 @@ resource "aws_eks_node_group" "my_eks_nodegroup" {
   depends_on = [
     aws_iam_role_policy_attachment.eks_AmazonEKSWorkerNodePolicy,
     aws_iam_role_policy_attachment.eks_AmazonEKS_CNI_Policy,
-  aws_iam_role_policy_attachment.eks_AmazonEC2ContainerRegistryReadOnly]
+    aws_iam_role_policy_attachment.eks_AmazonEC2ContainerRegistryReadOnly
+    ]
 
   tags = {
     Name = "${var.name_prefix}-eks-nodegroup"

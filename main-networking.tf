@@ -20,14 +20,15 @@ resource "aws_vpc" "my_vpc" {
   }
 }
 
+
+data "aws_availability_zones" "available" {
+  state = "available"
+}
+
 resource "random_shuffle" "az_list" {
   input = data.aws_availability_zones.available.names
 
   result_count = 10
-}
-
-data "aws_availability_zones" "available" {
-  state = "available"
 }
 
 
