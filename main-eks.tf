@@ -55,7 +55,7 @@ resource "aws_eks_node_group" "my_eks_nodegroup" {
     aws_iam_role_policy_attachment.eks_AmazonEKSWorkerNodePolicy,
     aws_iam_role_policy_attachment.eks_AmazonEKS_CNI_Policy,
     aws_iam_role_policy_attachment.eks_AmazonEC2ContainerRegistryReadOnly,
-    aws_iam_role_policy_attachment.aws_iam_role_policy_attachment.eks_AmazonSSMManagedInstanceCore
+    aws_iam_role_policy_attachment.eks_AmazonSSMManagedInstanceCore
     ]
 
   tags = {
