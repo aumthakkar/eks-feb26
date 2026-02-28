@@ -21,7 +21,7 @@ resource "helm_release" "secrets_store_csi_driver" {
 
 }
 
-resource "aws_eks_addon_version" "ascp_addon_latest" {
+data "aws_eks_addon_version" "ascp_addon_latest" {
   count = var.create_secrets_mgr_driver ? 1 : 0
   
   addon_name         = "aws-secrets-store-csi-driver-provider"
@@ -35,7 +35,7 @@ resource "aws_eks_addon" "ascp_addon" {
 
   cluster_name  = aws_eks_cluster.my_eks_cluster.name
   addon_name    = "aws-secrets-store-csi-driver-provider"
-  addon_version = aws_eks_addon_version.ascp_addon_latest[count.index].version
+  addon_version = data.aws_eks_addon_version.ascp_addon_latest[count.index].version
 
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
