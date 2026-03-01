@@ -1,4 +1,9 @@
 resource "kubernetes_manifest" "secret_provider_class_manifest" {
+  depends_on = [
+    helm_release.secrets_store_csi_driver,
+    aws_eks_addon.ascp_addon
+   ]
+
   manifest = {
     apiVersion = "secrets-store.csi.x-k8s.io/v1"
     kind = "SecretProviderClass"
