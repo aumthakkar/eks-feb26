@@ -10,6 +10,7 @@ resource "kubernetes_manifest" "secret_provider_class_manifest" {
 
     metadata = {
       name = "db-secrets"
+      namespace = "kube-system"
     }
 
     spec = {
